@@ -11,7 +11,7 @@ function AddTask() {
     const [description, setDescription] = useState("");
     const [duedate, setDueDate]         = useState("");
     const [priority, setPriority]       = useState("Normal");
-    const [status, setTaskStatus]       = useState("false");
+    const [status, setTaskStatus]       = useState("Open");
 
     const [submitted, setSubmitted]     = useState(false);
 

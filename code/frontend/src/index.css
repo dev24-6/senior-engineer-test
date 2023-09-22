@@ -19,7 +19,8 @@
 .nav {
   font-size: 1.3em;
   display: flex;
-  align-items: center;
+  align-items: center;  
+  width: 90vw;
 }
 .nav-link {
   margin: auto;
@@ -31,6 +32,7 @@
 .homepage-title {
   color: #2785ff;
   margin-bottom: 0px;
+  width: 90vw;
 }
 
 a {
@@ -117,9 +119,14 @@ input[type="radio"] {
   margin: 0px 24px 0px 2px;
 }
 
+/*
 .add-button-container {
+  display: flex;
+  align-self:center;
   margin: 8px auto;
+  width: 50vw;
 }
+*/
 
 .task-list-container {
   overflow-x: auto;
@@ -132,7 +139,7 @@ input[type="radio"] {
   overflow-x: auto;
   display: flex;
   align-items:center;
-  width: 100vw;
+  /* width: 100vw; */
 }
 table {
   margin: auto;

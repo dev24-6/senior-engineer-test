@@ -52,9 +52,9 @@ function Tasks() {
 
   return (
     <div>
-      <div className='add-button-container'>
+      {/* <div className='add-button-container'>
         <Link to={`/add-task`} className='add-button'>Add task</Link>
-      </div>
+      </div> */}
       {/* Show the loading message or an error message, otherwise, the data will be displayed */}
       { isLoading ? (<p>Loading...</p>) : error ? (<p>{error}</p>) : (
         <div className='task-list-container'>          
