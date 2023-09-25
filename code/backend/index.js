@@ -138,7 +138,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
 
 // Create a basic route in the current directory
 app.get("/", (req, res) => {
-    res.json("Testing");
+    res.json("Running");
 });
 
 // Route for non-existing pages (404)

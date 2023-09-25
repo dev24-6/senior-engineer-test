@@ -17,7 +17,7 @@ function Register() {
         password === retypePassword ? 
         (
             axios.post(baseURL, { username, email, password })
-            .then(result => console.log(result))
+            .then(result => navigate("/"))
             .catch(err => console.log(err))
         ) 
         : alert("Passwords do not match");
