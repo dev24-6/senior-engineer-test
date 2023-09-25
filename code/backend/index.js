@@ -2,12 +2,12 @@ require("dotenv").config(); // MongoDB connection string
 const cors = require("cors"); //Allows React to reach the server
 const express = require("express"); //Create an Express app, facilitate interaction with the server
 const connectDB = require("./connectDB");
+const bcrypt = require("bcryptjs");
 const Tasks = require("./models/Tasks");
+const User = require("./models/User");
 
 const app = express();
 const PORT = process.env.PORT || 8000 // Use the default port or the specified one as fallback
-
-connectDB();
 
 // initialize cors to allow data sharing
 app.use(cors());
@@ -16,11 +16,51 @@ app.use(express.urlencoded({ extended: true }));
 // Encode data in the requests in JSON format
 app.use(express.json());
 
+connectDB();
+
+// Register new user
+app.post("/api/register", (req, res) => {    
+    try {
+        const { username, email, password } = req.body;
+
+        bcrypt.hash(password, 10)
+        .then(hashedPassword => {
+            User.create({ username, email, hashedPassword })
+            .then(userData => res.json(userData))
+            .catch(err => res.json(err));
+        }).catch(err => console.log(err.message))
+    } catch (error) {
+        res.status(500).json({ error: "Unexpected error creating user."}) //TODO: 
+    }
+});
+
+app.post("/api/login", (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        User.findOne({ email })
+        .then(userData => {    
+            if(!userData) { 
+                // Incorrect credentials
+                res.json("IC");
+            } else {
+                bcrypt.compare(password, userData.hashedPassword, (err, result) => {
+                    if(result) { res.json(userData.id) } else { res.json("IC") }
+                })
+            }
+        })
+    } catch (error) {
+        res.status(500).json({ error: "Unexpected error retrieving user data."}) //TODO: 
+    }
+});
 
 // Fetch all tasks (asynchronously)
-app.get("/api/tasks", async (req, res) => {
+app.get("/api/taskslist/:ownerid", async (req, res) => {
+    
     try {
-        const taskData = await Tasks.find({});
+        const ownerID = req.params.ownerid;
+
+        const taskData = await Tasks.find({ "ownerid" : ownerID });
 
         if(!taskData) { throw new Error("Error retrieving tasks.") }
 
@@ -51,9 +91,9 @@ app.get("/api/tasks/:id", async (req, res) => {
 // Create a new task
 app.post("/api/tasks", async (req, res) => {
     try {
-        const { title, description, duedate, status, priority } = req.body;
+        const { ownerid, title, description, duedate, status, priority } = req.body;
 
-        const taskData = await Tasks.create({ title, description, duedate, status, priority });
+        const taskData = await Tasks.create({ ownerid, title, description, duedate, status, priority });
 
         if(!taskData) { throw new Error("Error creating the new task.") }
 
@@ -96,14 +136,6 @@ app.delete("/api/tasks/:id", async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
-
 // Create a basic route in the current directory
 app.get("/", (req, res) => {
     res.json("Testing");
@@ -115,5 +147,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port: ${PORT} :-)`);
+    console.info(`Server running on port: ${PORT} :-)`);
 });

@@ -7,6 +7,11 @@ function AddTask() {
 
     const baseURL = `${import.meta.env.VITE_SERVER_URL}/api/tasks`;
 
+    // The current user's ID will be used to filter the tasks later
+    const ownerID = localStorage.getItem("user");
+    if (!ownerID) { navigate("/") }
+
+    const [ownerid, setOwnerID]         = useState(ownerID);
     const [title, setTitle]             = useState("");
     const [description, setDescription] = useState("");
     const [duedate, setDueDate]         = useState("");
@@ -18,12 +23,12 @@ function AddTask() {
     const addTask = async(e) => {
         e.preventDefault(); // Prevent the form to refresh/redirect on submit
 
-        try {            
-            const response = await fetch(baseURL, {                
+        try {
+            const response = await fetch(baseURL, {
                 method: "POST",
-                headers: { "Content-Type" : "application/json; charset=utf-8" },                
+                headers: { "Content-Type" : "application/json; charset=utf-8" },
                 body: JSON.stringify({
-                    title, description, duedate, priority, status
+                    ownerid, title, description, duedate, priority, status
                 }),
             })
 
@@ -94,7 +99,7 @@ function AddTask() {
                             type='date'
                             className='form-input'
                             value={ duedate }
-                            onChange={ (e) => setDueDate(e.target.value) }                           
+                            onChange={ (e) => setDueDate(e.target.value) }
                         />
                     </div>
                     <div>

@@ -26,6 +26,8 @@
   margin: auto;
 }
 
+.login-title { text-align: center; }
+
 .homepage-title-container {
   text-align: center;
 }
@@ -57,7 +59,7 @@ body {
   margin: 40px auto;
 }
 
-input[type="submit"], .add-button {
+input[type="submit"], .button-submit, .add-button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.3em 1em;
@@ -95,7 +97,7 @@ input[type="submit"]:hover, .add-button:hover {
   background-color: #ff0000;
 }
 
-input[type="text"],[type="date"], textarea {
+input[type="text"],[type="date"], [type="email"], [type="password"], textarea {
   font-size: 18px;
   color: #FFF;
   border: 1px solid #2785ff;

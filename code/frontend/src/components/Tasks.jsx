@@ -1,8 +1,12 @@
 import React, { useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Tasks() {
-  const baseURL = `${import.meta.env.VITE_SERVER_URL}/api/tasks`;
+  const navigate = useNavigate();
+  const ownerID = localStorage.getItem("user");
+  if (!ownerID) { navigate("/") }
+
+  const baseURL = `${import.meta.env.VITE_SERVER_URL}/api/taskslist/${ownerID}`;
   // Create a state to store the data
   const [data, setData]           = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +18,9 @@ function Tasks() {
   const MAX_CHARACTERS = 20;
 
   useEffect(() => {
+    // If not logged in return to login page. 
+    if (!localStorage.getItem("user")) { navigate("/") }
+
     const fetchData = async () => {
       try {
         const response = await fetch(baseURL);
@@ -80,7 +87,7 @@ function Tasks() {
                   return (
                     <tr key={index}>
                       <td data-title="title">
-                        <Link to={ `/task/${task._id}` }>{ task.title }</Link>                        
+                        <Link to={ `/task/${task._id}` }>{ task.title }</Link>
                       </td>
                       {/* If the description is too long, display just part of it */}
                       <td data-title="description">

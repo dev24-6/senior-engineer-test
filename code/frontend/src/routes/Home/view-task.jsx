@@ -8,8 +8,6 @@ function UpdateTask() {
 
     const { id } = useParams(); // Grab the ID from the URL
 
-    const navigate = useNavigate();
-
     const baseURL = `${import.meta.env.VITE_SERVER_URL}/api/tasks/${id}`;
 
     const [isLoading, setIsLoading]     = useState(true);
@@ -22,6 +20,9 @@ function UpdateTask() {
     const [status, setTaskStatus]       = useState("");
 
     const [submitted, setSubmitted]     = useState(false);
+
+    const navigate = useNavigate();
+    if (!localStorage.getItem("user")) { navigate("/") }
 
     useEffect(() => {
         const fetchData = async () => {

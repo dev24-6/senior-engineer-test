@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// "orphan": A very simplistic way to filter tasks without user ID
+
 const TaskSchema = new Schema({
+    ownerid: {
+        type: String,
+        default: "orphan"
+    },
     title: {
         type: String,
         default: "Untitled task"
